@@ -1,6 +1,8 @@
 ### To Do
 
-    - Add a winning condition
+    - Game State
+        - Detect winning condition
+        - Update UI with wining condition
     - Synchronization
         - Freeze UI until someone does something 
     - Setup Type Script

@@ -6,14 +6,14 @@ function handleCellClick(event) {
         return;
     }
 
-    const target = event.target,
-        currentPlayer = sessionStorage.getItem("player"),
-        cellIndex = Number.parseInt(target.getAttribute("data-cell-index"));
-    console.log(currentPlayer)  
-    target.innerHTML = currentPlayer;
-    let arr = [cellIndex, currentPlayer];
+    let target = event.target;
+    const moveValue = sessionStorage.getItem("player"),
+        moveIndex = Number.parseInt(target.getAttribute("data-cell-index"));
+    
     // Send data to server to broadcast to other sockets
-    socket.send(arr);
+    socket.send([moveIndex, moveValue]);
+    // Optional serialization. Seems like browser serializes it.
+    // socket.send([moveIndex, moveValue].toString());
 }
 
 function handleRestart() {
@@ -38,10 +38,19 @@ function handlePlayerClick(event) {
         // open seem to work only on client side
         // socket.onopen = () => {};
         
+        // Update Each Scoket's UI after successfully receiving data from server
         socket.onmessage = (msg) => {
+            let data = msg.data.split(","),
+                moveIndex = data[0],
+                moveValue = data[1],
+                winner = data[2];
             // Upon receiving data from server, update UI
-            let target = document.querySelectorAll(`[data-cell-index="${msg.data[0]}"]`);
-            target[0].innerHTML = msg.data[2];
+            let target = document.querySelectorAll(`[data-cell-index="${moveIndex}"]`);
+            target[0].innerHTML = moveValue;
+
+            if (winner) {
+                document.querySelector(".game--status").innerHTML = `Player ${winner} has won!`
+            }
         }
     }
 

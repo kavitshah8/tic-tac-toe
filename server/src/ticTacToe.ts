@@ -13,24 +13,28 @@ const wins = [
 ];
 let gameState = ["", "", "", "", "", "", "", "", ""];
 
-
-export function updateGameState(index, value) { 
+enum GameState {
+    WON = "WON",
+    DRAW = "DRAW"
+};
+export function updateGameState(index: number, value: string) { 
     gameState[index] = value;
     console.log(gameState);
 }
 
-export function checkWin(index, value) {
+export function checkGameState() {
     for (let i = 0; i < wins.length; i++) {
         const wincondition = wins[i];
         const a = gameState[wincondition[0]],
             b =  gameState[wincondition[1]],
             c =  gameState[wincondition[2]];
-        if (a === "" || b === "" || c === "") {
-            continue;
-        }
-        if (a==b && b ==c) {
-            console.log("Win detected");
-            break;
+
+        if (a == b && b == c && a != "") {
+            return GameState.WON;
         }
     }
+
+    if (!gameState.includes(""))
+    
+        return GameState.DRAW;
 }
