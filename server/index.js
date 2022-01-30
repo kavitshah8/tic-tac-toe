@@ -1,9 +1,8 @@
-// https://github.com/websockets/ws
-// node index.js, starts the server
+
 import WebSocket, {WebSocketServer} from "ws";
+import {updateGameState, checkWin} from "./ticTacToe.js";
 
 const wss = new WebSocketServer({port: "8000"});
-
 
 // Server Side APIs
 // onconnection
@@ -15,21 +14,29 @@ const wss = new WebSocketServer({port: "8000"});
 // all the code on server side should reside in the callback
 wss.on("connection", socket => {
 
+    let count = 0;
+    wss.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+            count++;
+        }
+    });
+
     socket.onclose = socket => {
         console.log("socket disconnected", socket.code)
     }
 
     socket.onmessage = msg => {
-        console.log("received:", msg.data);
-
         // excluding yourself, broadcast to everyone
         wss.clients.forEach(client => {
             if (client != socket && client.readyState === WebSocket.OPEN) {
                 client.send(msg.data);
             }
+            // update gamestate
+            updateGameState(msg.data[0], msg.data[2]);
+            checkWin();
         });
     }
-
 });
 
 console.log("WebSocket Server running on port: 8000")
+
