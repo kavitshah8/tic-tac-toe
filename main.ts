@@ -8,7 +8,7 @@ function handleCellClick(event) {
 
     let target = event.target;
     const moveValue = sessionStorage.getItem("player"),
-        moveIndex = Number.parseInt(target.getAttribute("data-cell-index"));
+        moveIndex = parseInt(target.getAttribute("data-cell-index"));
     
     // Send data to server to broadcast to other sockets
     socket.send([moveIndex, moveValue]);
