@@ -3,6 +3,7 @@
     - Setup Type Script
     - Game State
         - Detect winning condition
+        - Restart the game after winning condition
         - Update UI with wining condition
     - Synchronization
         - Freeze UI until someone does something 
@@ -12,11 +13,15 @@
 ### Running
 
 #### UI 
-tsc main.js --outDir dist
 
-Use VSCode plugin to launch web app using Live Reloading 
+```
+cd ~/code/ticTacToe
+tsc main.ts --outDir dist
+```
+
+Just open `index.html`, using VSCode plugin to launch web app using Live Reloading 
 #### server
-    - To start a server `npm run build && npm run start`
+    - To start a server `cd server && npm run build && npm run start`
 
 ### HTML
 https://developer.mozilla.org/en-US/docs/Web/API/Event/target

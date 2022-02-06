@@ -1,4 +1,13 @@
 let socket;
+enum GameState {
+    WON = "WON",
+    DRAW = "DRAW",
+    CONT = "CONTINUE"
+};
+
+const gameContinues = "Game continues",
+    gameDraw = "Game DRAW";
+let createWinningMessage = (player) => `Player ${player} wins!`;
 
 function handleCellClick(event) {
     if (!sessionStorage.getItem("player")) {
@@ -29,6 +38,14 @@ function handlePlayerClick(event) {
     // event.currentTarget.remove();
 }
 
+function restartGame() {
+    document
+        .querySelectorAll(".cell")
+        .forEach(cell => {
+            cell.innerHTML = "";
+        });
+}
+
 (function init() {
     
     if ("WebSocket" in window) {
@@ -43,13 +60,21 @@ function handlePlayerClick(event) {
             let data = msg.data.split(","),
                 moveIndex = data[0],
                 moveValue = data[1],
-                winner = data[2];
+                gameState = data[2];
             // Upon receiving data from server, update UI
             let target = document.querySelectorAll(`[data-cell-index="${moveIndex}"]`);
             target[0].innerHTML = moveValue;
 
-            if (winner) {
-                document.querySelector(".game--status").innerHTML = `Player ${winner} has won!`
+            let gameStateElement = document.querySelector(".game--status");
+            console.log(gameState);
+            if (gameState == GameState.WON) {
+                gameStateElement.innerHTML = createWinningMessage(moveValue);
+                // restart the game
+                restartGame();
+            } else if (gameState == GameState.DRAW) {
+                gameStateElement.innerHTML = gameDraw;
+            } else {
+                gameStateElement.innerHTML = gameContinues;
             }
         }
     }

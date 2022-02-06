@@ -23,13 +23,12 @@ wss.on("connection", socket => {
     });
 
     socket.onclose = socket => {
-        console.log("socket disconnected", socket.code)
+        console.log("socket disconnected", socket.code);
     }
 
     socket.onmessage = msg => {
         // Broadcast to everyone
         wss.clients.forEach(client => {
-
             // msg.data is a buffer in this case a string buffer, thanks TypeScript
             // https://nodejs.org/en/knowledge/advanced/buffers/how-to-use-buffers/
             // msg.data.toString() converts buffer of string to string object
@@ -38,9 +37,10 @@ wss.on("connection", socket => {
 
             updateGameState(Number(data[0]), data[1]);
 
-            // if (checkGameState()) {
-            //     data.push(data[1]);
-            // }
+            const gameState = checkGameState();
+            console.log(gameState);
+            data.push(gameState);
+
             if (client.readyState === WebSocket.OPEN) {
                 client.send(data.toString());
             }
@@ -49,4 +49,3 @@ wss.on("connection", socket => {
 });
 
 console.log("WebSocket Server running on port: 8000")
-

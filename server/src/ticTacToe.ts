@@ -11,18 +11,20 @@ const wins = [
     [1, 4, 7],
     [2, 5, 8],
 ];
+// Global variable, needs to be treated specially
 let gameState = ["", "", "", "", "", "", "", "", ""];
 
 enum GameState {
     WON = "WON",
-    DRAW = "DRAW"
+    DRAW = "DRAW",
+    CONT = "CONTINUE"
 };
 export function updateGameState(index: number, value: string) { 
     gameState[index] = value;
-    console.log(gameState);
 }
 
 export function checkGameState() {
+    console.log(gameState);
     for (let i = 0; i < wins.length; i++) {
         const wincondition = wins[i];
         const a = gameState[wincondition[0]],
@@ -30,11 +32,16 @@ export function checkGameState() {
             c =  gameState[wincondition[2]];
 
         if (a == b && b == c && a != "") {
+            // reset the game
+            // gameState = ["", "", "", "", "", "", "", "", ""];
             return GameState.WON;
         }
     }
 
-    if (!gameState.includes(""))
-    
+    if (!gameState.includes("")) {
         return GameState.DRAW;
+    }
+
+    return GameState.CONT;
+    
 }
