@@ -1,7 +1,7 @@
 
 import {WebSocketServer} from "ws";
 import WebSocket = require("ws");
-import {updateGameState, checkGameState} from "./ticTacToe";
+import {updateGameState, checkGameState, GameState, restartGame} from "./ticTacToe";
 
 const wss = new WebSocketServer({port: 8000});
 
@@ -16,9 +16,15 @@ const wss = new WebSocketServer({port: 8000});
 wss.on("connection", socket => {
 
     let count = 0;
+    let gameState;
+
     wss.clients.forEach((client) => {
         if (client.readyState === WebSocket.OPEN) {
             count++;
+            console.log();
+
+            // Init data for each client on connection
+            let gameState = ["", "", "", "", "", "", "", "", ""];
         }
     });
 
@@ -27,20 +33,22 @@ wss.on("connection", socket => {
     }
 
     socket.onmessage = msg => {
+        // msg.data is a buffer in this case a string buffer, thanks TypeScript
+        // https://nodejs.org/en/knowledge/advanced/buffers/how-to-use-buffers/
+        // msg.data.toString() converts buffer of string to string object
+        let message = msg.data.toString("utf-8");
+        let data = message.split(",");
+        
+        updateGameState(Number(data[0]), data[1]);
+        gameState = checkGameState();
+        data.push(gameState);
+        
+        if (gameState == GameState.WON) {
+            restartGame();
+        }
+        
         // Broadcast to everyone
         wss.clients.forEach(client => {
-            // msg.data is a buffer in this case a string buffer, thanks TypeScript
-            // https://nodejs.org/en/knowledge/advanced/buffers/how-to-use-buffers/
-            // msg.data.toString() converts buffer of string to string object
-            let message = msg.data.toString("utf-8"),
-                data = message.split(",");
-
-            updateGameState(Number(data[0]), data[1]);
-
-            const gameState = checkGameState();
-            console.log(gameState);
-            data.push(gameState);
-
             if (client.readyState === WebSocket.OPEN) {
                 client.send(data.toString());
             }

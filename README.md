@@ -1,14 +1,24 @@
 ### To Do
 
-    - Setup Type Script
-    - Game State
+    - Setup TypeScript
+
+    - Synchronization
+        - Freeze UI until someone does something 
+    
+    - Let players switch between X and 0
+        Use cookies to remember users choice
+
+### Done
+    
+    Each client has a game state
+        - Where does the game state should live?
+        - Should it live on the client or server side? 
+        - If we store it on the client side, we have to pass all these data during each request to the server 
+    
+    Game State
         - Detect winning condition
         - Restart the game after winning condition
         - Update UI with wining condition
-    - Synchronization
-        - Freeze UI until someone does something 
-    - Let players switch between X and 0
-        Use cookies to remember users choice
 
 ### Running
 

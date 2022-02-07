@@ -14,13 +14,18 @@ const wins = [
 // Global variable, needs to be treated specially
 let gameState = ["", "", "", "", "", "", "", "", ""];
 
-enum GameState {
+export enum GameState {
     WON = "WON",
     DRAW = "DRAW",
     CONT = "CONTINUE"
 };
+
 export function updateGameState(index: number, value: string) { 
     gameState[index] = value;
+}
+
+export function restartGame() {
+    gameState = ["", "", "", "", "", "", "", "", ""];
 }
 
 export function checkGameState() {
@@ -32,8 +37,6 @@ export function checkGameState() {
             c =  gameState[wincondition[2]];
 
         if (a == b && b == c && a != "") {
-            // reset the game
-            // gameState = ["", "", "", "", "", "", "", "", ""];
             return GameState.WON;
         }
     }
