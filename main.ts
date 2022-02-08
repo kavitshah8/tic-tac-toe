@@ -42,7 +42,7 @@ function restartGame() {
     document
         .querySelectorAll(".cell")
         .forEach(cell => {
-            cell.innerHTML = "";
+            // cell.innerHTML = "";
         });
 }
 
@@ -66,7 +66,6 @@ function restartGame() {
             target[0].innerHTML = moveValue;
 
             let gameStateElement = document.querySelector(".game--status");
-            console.log(gameState);
             if (gameState == GameState.WON) {
                 gameStateElement.innerHTML = createWinningMessage(moveValue);
                 // restart the game

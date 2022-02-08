@@ -1,12 +1,17 @@
 ### To Do
 
-    - Setup TypeScript
-
     - Synchronization
         - Freeze UI until someone does something 
     
     - Let players switch between X and 0
         Use cookies to remember users choice
+
+    - Build 
+        - Setup TypeScript
+        - Easier scripts to bundle things
+    
+    - Client side reset improvemnet 
+        - Maybe add an animation
 
 ### Done
     
@@ -17,7 +22,7 @@
     
     Game State
         - Detect winning condition
-        - Restart the game after winning condition
+        - Restart the game after winning condition on server side
         - Update UI with wining condition
 
 ### Running
