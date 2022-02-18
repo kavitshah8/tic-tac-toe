@@ -23,6 +23,19 @@ function handleCellClick(event) {
     socket.send([moveIndex, moveValue]);
     // Optional serialization. Seems like browser serializes it.
     // socket.send([moveIndex, moveValue].toString());
+
+    // disable click event
+    let el = document.getElementsByClassName("game--container");
+    document.querySelectorAll(".cell")
+    .forEach(cell => {
+       cell.setAttribute("disabled", "true"); 
+       cell.setAttribute("disabled", "false");
+       cell.addEventListener("click", (e)=>{
+        e.preventDefault();
+       },false); 
+    //    TS COmpile error
+    //    cell.style.pointer-events= "none"; 
+    });
 }
 
 function handleRestart() {
@@ -75,6 +88,7 @@ function restartGame() {
             } else {
                 gameStateElement.innerHTML = gameContinues;
             }
+            // enable event handler
         }
     }
 

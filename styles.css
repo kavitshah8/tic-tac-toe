@@ -24,6 +24,7 @@ section {
 
 .cell {
     font-family: "Permanent Marker", cursive;
+    /* pointer-events: none; */
     width: 100px;
     height: 100px;
     box-shadow: 2px 2px 2px 2px #ecd7ba;

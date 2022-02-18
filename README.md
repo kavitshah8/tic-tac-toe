@@ -1,7 +1,7 @@
 ### To Do
 
     - Synchronization
-        - Freeze UI until someone does something 
+        - Freeze UI until someone does something : prevent default
     
     - Let players switch between X and 0
         Use cookies to remember users choice
