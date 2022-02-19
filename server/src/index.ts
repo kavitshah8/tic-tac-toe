@@ -47,9 +47,9 @@ wss.on("connection", socket => {
             restartGame();
         }
         
-        // Broadcast to everyone
+        // Broadcast to everyone except the sending client
         wss.clients.forEach(client => {
-            if (client.readyState === WebSocket.OPEN) {
+            if (client != socket && client.readyState === WebSocket.OPEN) {
                 client.send(data.toString());
             }
         });

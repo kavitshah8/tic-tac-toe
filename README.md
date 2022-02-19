@@ -1,7 +1,6 @@
 ### To Do
 
-    - Synchronization
-        - Freeze UI until someone does something : prevent default
+    - Deploy to server
     
     - Let players switch between X and 0
         Use cookies to remember users choice
@@ -49,3 +48,9 @@ https://codepen.io/Abubakkar_Mohmand/pen/PoKMGVj
 
 ### Learnings
  - Data is passed using bufferes in the sockets
+
+### Flow
+
+![Collaboration Diagram](/ttt.png).
+
+

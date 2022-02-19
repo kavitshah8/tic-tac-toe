@@ -19,22 +19,17 @@ function handleCellClick(event) {
     const moveValue = sessionStorage.getItem("player"),
         moveIndex = parseInt(target.getAttribute("data-cell-index"));
     
+    // Update UI
+    target.innerHTML = sessionStorage.getItem("player");
+
     // Send data to server to broadcast to other sockets
-    socket.send([moveIndex, moveValue]);
     // Optional serialization. Seems like browser serializes it.
     // socket.send([moveIndex, moveValue].toString());
+    socket.send([moveIndex, moveValue]);
 
     // disable click event
-    let el = document.getElementsByClassName("game--container");
-    document.querySelectorAll(".cell")
-    .forEach(cell => {
-       cell.setAttribute("disabled", "true"); 
-       cell.setAttribute("disabled", "false");
-       cell.addEventListener("click", (e)=>{
-        e.preventDefault();
-       },false); 
-    //    TS COmpile error
-    //    cell.style.pointer-events= "none"; 
+    document.querySelectorAll(".cell").forEach(cell => {
+       (cell as HTMLScriptElement).style.pointerEvents = "none"; 
     });
 }
 
@@ -60,7 +55,6 @@ function restartGame() {
 }
 
 (function init() {
-    
     if ("WebSocket" in window) {
         socket = new WebSocket("ws://localhost:8000");
         // socket.send()
@@ -88,7 +82,12 @@ function restartGame() {
             } else {
                 gameStateElement.innerHTML = gameContinues;
             }
-            // enable event handler
+            
+            // enable click events on grid cells
+            document.querySelectorAll(".cell").forEach(cell => {
+                console.log("setting pointer events to NONE");
+                (cell as HTMLScriptElement).style.pointerEvents = "auto"; 
+            });
         }
     }
 
