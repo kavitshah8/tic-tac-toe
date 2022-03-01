@@ -21,27 +21,20 @@ wss.on("connection", socket => {
     wss.clients.forEach((client) => {
         if (client.readyState === WebSocket.OPEN) {
             count++;
-            console.log();
-
-            // Init data for each client on connection
-            let gameState = ["", "", "", "", "", "", "", "", ""];
         }
     });
-
-    socket.onclose = socket => {
-        console.log("socket disconnected", socket.code);
-    }
 
     socket.onmessage = msg => {
         // msg.data is a buffer in this case a string buffer, thanks TypeScript
         // https://nodejs.org/en/knowledge/advanced/buffers/how-to-use-buffers/
         // msg.data.toString() converts buffer of string to string object
         let message = msg.data.toString("utf-8");
-        let data = message.split(",");
+        let data = JSON.parse(message);
+        console.log(data)
         
-        updateGameState(Number(data[0]), data[1]);
+        updateGameState(Number(data.entity[0].components.Position.index), data.moveValue);
         gameState = checkGameState();
-        data.push(gameState);
+        data["gameState"] = gameState;
         
         if (gameState == GameState.WON) {
             restartGame();
@@ -50,10 +43,15 @@ wss.on("connection", socket => {
         // Broadcast to everyone except the sending client
         wss.clients.forEach(client => {
             if (client != socket && client.readyState === WebSocket.OPEN) {
-                client.send(data.toString());
+                client.send(JSON.stringify(data));
             }
         });
     }
+    
+    socket.onclose = socket => {
+        console.log("socket disconnected", socket.code);
+    }
+
 });
 
 console.log("WebSocket Server running on port: 8000")

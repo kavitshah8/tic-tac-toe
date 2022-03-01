@@ -46,6 +46,9 @@ https://github.com/websockets/ws
 ### Code pen
 https://codepen.io/Abubakkar_Mohmand/pen/PoKMGVj
 
+### ECS
+http://vasir.net/blog/game-development/how-to-build-entity-component-system-in-javascript
+
 ### Learnings
  - Data is passed using bufferes in the sockets
 
