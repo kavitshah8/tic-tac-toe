@@ -41,8 +41,10 @@ wss.on("connection", socket => {
         }
         
         // Broadcast to everyone except the sending client
+        // Broadcast to everyone
         wss.clients.forEach(client => {
-            if (client != socket && client.readyState === WebSocket.OPEN) {
+            // if (client != socket && client.readyState === WebSocket.OPEN) {
+            if (client.readyState === WebSocket.OPEN) {
                 client.send(JSON.stringify(data));
             }
         });

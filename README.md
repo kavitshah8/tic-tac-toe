@@ -13,6 +13,12 @@
         - Maybe add an animation
 
 ### Bugs
+    - Fix pointer events none, auto
+        - Currently, server broadcasts messages to every client
+        - Proposed solu: generate a unique client ID, make it part of ECS
+        - Server should include client ID in the response
+        - Use this client ID to turn pointer events ON-OFF
+    
     - Fix winning situation
     - When a new client joins after the game start, he should start from the same point
 

@@ -13,9 +13,14 @@ ECS.Systems.ViewSystem = function ViewSystem (moveIndex, gameState) {
     let target = document.querySelectorAll(`[data-cell-index="${moveIndex}"]`);
     target[0].innerHTML = t[0].components.Appearance.fill;
 
-    let gameStateElement = document.querySelector(".game--status");
+    document.querySelectorAll(".cell").forEach(cell => {
+        cell.style.pointerEvents = "auto"; 
+         // (cell as HTMLScriptElement).style.pointerEvents = "none"; 
+     });
+
+     let gameStateElement = document.querySelector(".game--status");
     if (gameState == GameState.WON) {
-        gameStateElement.innerHTML = createWinningMessage(moveValue);
+        gameStateElement.innerHTML = createWinningMessage(t[0].components.Appearance.fill);
         // restart the game
         restartGame();
     } else if (gameState == GameState.DRAW) {
@@ -24,11 +29,11 @@ ECS.Systems.ViewSystem = function ViewSystem (moveIndex, gameState) {
         gameStateElement.innerHTML = gameContinues;
     }
     
-    // enable click events on grid cells
-    document.querySelectorAll(".cell").forEach(cell => {
-        console.log("setting pointer events to NONE");
-        // (cell as HTMLScriptElement).style.pointerEvents = "auto"; 
-        cell.style.pointerEvents = "auto"; 
-    });
+    // // enable click events on grid cells
+    // document.querySelectorAll(".cell").forEach(cell => {
+    //     console.log("setting pointer events to NONE");
+    //     // (cell as HTMLScriptElement).style.pointerEvents = "auto"; 
+    //     cell.style.pointerEvents = "auto"; 
+    // });
 
 }

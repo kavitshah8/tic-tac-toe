@@ -36,6 +36,7 @@ function handleCellClick(event) {
     };
     socket.send(JSON.stringify(data));
 
+    // Publish ECS System
     // disable click event
     document.querySelectorAll(".cell").forEach(cell => {
        cell.style.pointerEvents = "none"; 
