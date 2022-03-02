@@ -12,6 +12,11 @@
     - Client side reset improvemnet 
         - Maybe add an animation
 
+### Bugs
+    - Fix winning situation
+    - When a new client joins after the game start, he should start from the same point
+
+
 ### Done
     
     Each client has a game state

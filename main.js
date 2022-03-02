@@ -59,7 +59,9 @@ function restartGame() {
         });
 }
 
+// Entry Point for the Client Side Application
 (function init() {
+    // Create all the entities for ECS
     for (let i = 0; i < 9; i++) {
         let eng = new ECS.Entity();
         eng.addComponent(new ECS.Components.Position(i));
@@ -78,31 +80,21 @@ function restartGame() {
         
         // Update Each Scoket's UI after successfully receiving data from server
         socket.onmessage = (msg) => {
-            let data = JSON.parse(msg.data),
-                moveIndex = data.entity[0].components.Position.index,
-                moveValue = data.moveValue,
-                gameState = data.gameState;
-            // Upon receiving data from server, update UI
-            let target = document.querySelectorAll(`[data-cell-index="${moveIndex}"]`);
-            target[0].innerHTML = moveValue;
 
-            let gameStateElement = document.querySelector(".game--status");
-            if (gameState == GameState.WON) {
-                gameStateElement.innerHTML = createWinningMessage(moveValue);
-                // restart the game
-                restartGame();
-            } else if (gameState == GameState.DRAW) {
-                gameStateElement.innerHTML = gameDraw;
-            } else {
-                gameStateElement.innerHTML = gameContinues;
-            }
+            // Run ECS Systems:
+            // PublisherSystem
+            // RendererSystem
             
-            // enable click events on grid cells
-            document.querySelectorAll(".cell").forEach(cell => {
-                console.log("setting pointer events to NONE");
-                // (cell as HTMLScriptElement).style.pointerEvents = "auto"; 
-                cell.style.pointerEvents = "auto"; 
-            });
+            let data = JSON.parse(msg.data),
+            moveIndex = data.entity[0].components.Position.index,
+            moveValue = data.moveValue,
+            gameState = data.gameState;
+            
+            // ReceiverSysetm
+            ECS.Systems.ReceiverSystem(moveIndex, moveValue);
+
+            // ViewSystem
+            ECS.Systems.ViewSystem(moveIndex, gameState);
         }
     }
 
