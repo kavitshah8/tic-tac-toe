@@ -18,6 +18,7 @@
         - Proposed solu: generate a unique client ID, make it part of ECS
         - Server should include client ID in the response
         - Use this client ID to turn pointer events ON-OFF
+    - Create Pipeline of Systems
     
     - Fix winning situation
     - When a new client joins after the game start, he should start from the same point
@@ -65,6 +66,6 @@ http://vasir.net/blog/game-development/how-to-build-entity-component-system-in-j
 
 ### Flow
 
-![Collaboration Diagram](/ttt.png).
+ToDo Add updated flow diagram with ECS. 
 
 

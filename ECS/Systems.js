@@ -1,11 +1,13 @@
 ECS.Systems.ReceiverSystem = function ReceiverSysetm(moveIndex, moveValue) {
     let t = ECS.Entities.filter(entity => entity.components.Position.index == moveIndex);
-    console.log("Rx msg from server Before ECS Update", t[0].print());
+    // console.log("Rx msg from server Before ECS Update ");
+    // t[0].print();
     t[0].components.Appearance.fill = moveValue;
-    console.log("Rx msg from server after ECS Update", t[0].print());
+    // console.log("Rx msg from server after ECS Update ")
+    // t[0].print();
 }
 
-ECS.Systems.ViewSystem = function ViewSystem (moveIndex, gameState) {
+ECS.Systems.ViewSystem = function ViewSystem (moveIndex, gameState, isPublisher) {
     
     let t = ECS.Entities.filter(entity => entity.components.Position.index == moveIndex);
 
@@ -13,8 +15,9 @@ ECS.Systems.ViewSystem = function ViewSystem (moveIndex, gameState) {
     let target = document.querySelectorAll(`[data-cell-index="${moveIndex}"]`);
     target[0].innerHTML = t[0].components.Appearance.fill;
 
+    const pointerEventsValue = isPublisher ? "none": "auto";
     document.querySelectorAll(".cell").forEach(cell => {
-        cell.style.pointerEvents = "auto"; 
+        cell.style.pointerEvents = pointerEventsValue; 
          // (cell as HTMLScriptElement).style.pointerEvents = "none"; 
      });
 

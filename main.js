@@ -21,27 +21,15 @@ function handleCellClick(event) {
     const moveValue = sessionStorage.getItem("player"),
         moveIndex = parseInt(target.getAttribute("data-cell-index"));
     
-    // Update UI
     target.innerHTML = sessionStorage.getItem("player");
-
-    // Send data to server to broadcast to other sockets
-    // Optional serialization. Seems like browser serializes it.
-    // socket.send([moveIndex, moveValue].toString());
 
     // find entity id based on moveIndex
     let t = ECS.Entities.filter(entity => entity.components.Position.index == moveIndex);
-    let data = {   
+    let data = {
         entity: t,
         moveValue: moveValue
     };
     socket.send(JSON.stringify(data));
-
-    // Publish ECS System
-    // disable click event
-    document.querySelectorAll(".cell").forEach(cell => {
-       cell.style.pointerEvents = "none"; 
-        // (cell as HTMLScriptElement).style.pointerEvents = "none"; 
-    });
 }
 
 function handleRestart() {
@@ -62,6 +50,7 @@ function restartGame() {
 
 // Entry Point for the Client Side Application
 (function init() {
+
     // Create all the entities for ECS
     for (let i = 0; i < 9; i++) {
         let eng = new ECS.Entity();
@@ -90,12 +79,13 @@ function restartGame() {
             moveIndex = data.entity[0].components.Position.index,
             moveValue = data.moveValue,
             gameState = data.gameState;
+            console.log("Is Publisher = ", data.isPublisher);
             
             // ReceiverSysetm
             ECS.Systems.ReceiverSystem(moveIndex, moveValue);
 
             // ViewSystem
-            ECS.Systems.ViewSystem(moveIndex, gameState);
+            ECS.Systems.ViewSystem(moveIndex, gameState, data.isPublisher);
         }
     }
 

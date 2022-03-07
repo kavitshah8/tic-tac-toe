@@ -15,14 +15,11 @@ const wss = new WebSocketServer({port: 8000});
 // all the code on server side should reside in the callback
 wss.on("connection", socket => {
 
-    let count = 0;
     let gameState;
-
-    wss.clients.forEach((client) => {
-        if (client.readyState === WebSocket.OPEN) {
-            count++;
-        }
-    });
+    
+    // wss.clients is a global which one can use
+    // wss.clients.forEach((client) => {
+        // });
 
     socket.onmessage = msg => {
         // msg.data is a buffer in this case a string buffer, thanks TypeScript
@@ -30,7 +27,6 @@ wss.on("connection", socket => {
         // msg.data.toString() converts buffer of string to string object
         let message = msg.data.toString("utf-8");
         let data = JSON.parse(message);
-        console.log(data)
         
         updateGameState(Number(data.entity[0].components.Position.index), data.moveValue);
         gameState = checkGameState();
@@ -43,8 +39,8 @@ wss.on("connection", socket => {
         // Broadcast to everyone except the sending client
         // Broadcast to everyone
         wss.clients.forEach(client => {
-            // if (client != socket && client.readyState === WebSocket.OPEN) {
-            if (client.readyState === WebSocket.OPEN) {
+            if (client.readyState === WebSocket.OPEN) {                 
+                data.isPublisher = (client == socket) ? true: false;
                 client.send(JSON.stringify(data));
             }
         });
